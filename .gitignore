@@ -1,0 +1,4 @@
+node_modules/
+.env
+joi.js
+model.js
