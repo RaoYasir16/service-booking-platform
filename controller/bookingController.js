@@ -3,7 +3,7 @@ const { User, Service, Booking } = require("../models");
 //..........User creates Booking......//
 const createBooking = async (req, res) => {
   try {
-    const id = req.user.id
+    const id = req.user.id;
     const { serviceId, date } = req.body;
     const [day, month, year] = date.split("-");
     const newDate = new Date(`${year}-${month}-${day}`);
@@ -15,19 +15,19 @@ const createBooking = async (req, res) => {
     }
 
     //......Find User in User Table........//
-    const user = await User.findOne({where:{id}});
-    if(!user){
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
       return res.status(404).json({
-        message:"User Not found"
-      })
+        message: "User Not found",
+      });
     }
 
-    const existingDate = await Booking.findOne({where:{date:newDate}})
+    const existingDate = await Booking.findOne({ where: { date: newDate } });
 
-    if(existingDate){
+    if (existingDate) {
       return res.status(400).json({
-        message:"You are already book this service in same date"
-      })
+        message: "You are already book this service in same date",
+      });
     }
 
     const booking = await Booking.create({
@@ -79,8 +79,12 @@ const getUserBooking = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const userBooking = await Booking.findAll({ where: { userId },
-    include:[{model:Service},{model:User, as :"provider", attributes:['name','email']}]
+    const userBooking = await Booking.findAll({
+      where: { userId },
+      include: [
+        { model: Service },
+        { model: User, as: "provider", attributes: ["name", "email"] },
+      ],
     });
     if (userBooking.length === 0) {
       return res.status(404).json({
@@ -99,30 +103,38 @@ const getUserBooking = async (req, res) => {
   }
 };
 
-
 //..........Get Current Provider's booking...........//
-const getProviderBooking = async(req,res)=>{
-    try {
-        const providerId = req.user.id
+const getProviderBooking = async (req, res) => {
+  try {
+    const providerId = req.user.id;
 
-        const providerBooking = await Booking.findAll({whare:{providerId},
-        include:[{model:Service},{model:User, as:"provider", attributes:['name','email']}]
-        });
+    const providerBooking = await Booking.findAll({
+      whare: { providerId },
+      include: [
+        { model: Service },
+        { model: User, as: "provider", attributes: ["name", "email"] },
+      ],
+    });
 
-        if(providerBooking.length === 0){
-            return res.status(404).json({
-                message:"Booking not found"
-            });
-        }
-
-        return res.status(200).json({
-            message:"Booking for Provider fatched Successfylly",
-            providerBooking
-        })
-    } catch (error) {
-        return res.status(500).json({
-            message:error.message
-        })
+    if (providerBooking.length === 0) {
+      return res.status(404).json({
+        message: "Booking not found",
+      });
     }
-}
-module.exports = { createBooking, updateBookingStatus, getUserBooking, getProviderBooking };
+
+    return res.status(200).json({
+      message: "Booking for Provider fatched Successfylly",
+      providerBooking,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+module.exports = {
+  createBooking,
+  updateBookingStatus,
+  getUserBooking,
+  getProviderBooking,
+};

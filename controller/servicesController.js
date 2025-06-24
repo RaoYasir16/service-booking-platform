@@ -5,11 +5,11 @@ const createService = async (req, res) => {
   try {
     const { title, description, category, price } = req.body;
     const id = req.user.id;
-    const user = await User.findOne({where:{id}});
-    if(!user){
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
       return res.status(404).json({
-        message:"User Not found"
-      })
+        message: "User Not found",
+      });
     }
     const service = await Service.create({
       title,

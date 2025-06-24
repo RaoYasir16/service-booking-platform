@@ -116,7 +116,7 @@ const getAllBooking = async (req, res) => {
 //...........Delete Users, Provider............//
 const deleteUserProvider = async (req, res) => {
   try {
-    const id = req.params.id
+    const id = req.params.id;
 
     const record = await User.findOne({ where: { id } });
     if (!record) {
@@ -145,30 +145,29 @@ const deleteUserProvider = async (req, res) => {
   }
 };
 
-
 //...........Delete Service and related data ..........//
-const deleteService = async(req,res)=>{
-  try { 
-    console.log("hello")
-    const id = req.params.id
-    const record = await Service.findOne({where:{id}});
-    if(!record){
+const deleteService = async (req, res) => {
+  try {
+    console.log("hello");
+    const id = req.params.id;
+    const record = await Service.findOne({ where: { id } });
+    if (!record) {
       return res.status(404).json({
-      message:"Service Not found"
-      })
+        message: "Service Not found",
+      });
     }
 
     await record.destroy();
 
     return res.status(200).json({
-      message:"Deleted successfylly"
-    })
+      message: "Deleted successfylly",
+    });
   } catch (error) {
     return res.status(500).json({
-      message:error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 module.exports = {
   getAllUser,
   getAllProvider,
