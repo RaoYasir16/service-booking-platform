@@ -152,7 +152,7 @@ const deleteUserProvider = async (req, res) => {
 //...........Delete Service and related data ..........//
 const deleteService = async (req, res) => {
   try {
-    console.log("hello");
+  
     const id = req.params.id;
     const record = await Service.findOne({ where: { id } });
     if (!record) {
