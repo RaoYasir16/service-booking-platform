@@ -53,8 +53,12 @@ const getAllProvider = async (req, res) => {
 const getAllServices = async (req, res) => {
   try {
     const services = await Service.findAll({
-      include: [User],
-      attributes: ["name", "email", "role"],
+      include: [
+        {
+          model: User,
+          attributes: ["name", "email", "role"],
+        },
+      ],
     });
 
     if (services.length === 0) {
@@ -168,6 +172,9 @@ const deleteService = async (req, res) => {
     });
   }
 };
+
+
+//.............Module exports........//
 module.exports = {
   getAllUser,
   getAllProvider,
